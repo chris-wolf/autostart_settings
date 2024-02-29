@@ -1,6 +1,6 @@
 <?code-excerpt path-base="excerpts/packages/autostart_settings"?>
 
-# Open autostart settings for many manufacturers. 
+# Opens device specific autostart settings. 
 
 [![pub package](https://img.shields.io/pub/v/autostart_settings.svg)](https://pub.dev/packages/autostart_settings)
 
@@ -22,6 +22,8 @@ Currently this plugin support a wide variety of manufacturers gathered over the 
 * OnePlus
 * HTC
 * Nokia
+
+
 
 
 |             | Android |
@@ -123,14 +125,12 @@ I would recommend for better reliability to also request ignoreBatteryOptimizati
 ```
 import 'package:permission_handler/permission_handler.dart';
 
-
-                                        await Permission.ignoreBatteryOptimizations
-                                            .request();
+await Permission.ignoreBatteryOptimizations.request();
 ```
 # Contribute
 If you own a device where the autostart settings page is not yet added, would be grateful if yo contribute, these adb-commands might help identify the correct activity:
-* list all activityName:   adb shell dumpsys package | grep Activity
-* finding current active/resumed activity:   adb shell dumpsys activity activities | grep mResumedActivity
+* list all activityName:   __adb shell dumpsys package | grep Activity__
+* finding current active/resumed activity:   __adb shell dumpsys activity activities | grep mResumedActivity__
 
 
 
