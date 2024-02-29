@@ -1,6 +1,7 @@
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
-import 'autostart_settings_method_channel.dart';
+import 'autostart_settings_method_channel.dart' if (dart.library.html) 'web_autostart_settings_method_channel.dart';
+
 
 abstract class AutostartSettingsPlatform extends PlatformInterface {
   /// Constructs a AutostartSettingsPlatform.

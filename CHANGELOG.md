@@ -9,4 +9,6 @@
 
 ## 0.0.3
 
+* Return false for other platforms that android instead of crashing
 * Adjusted readme
+
