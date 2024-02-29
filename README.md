@@ -22,6 +22,7 @@ Currently this plugin support a wide variety of manufacturers gathered over the 
 * OnePlus
 * HTC
 * Nokia
+* Samsung
 
 
 
