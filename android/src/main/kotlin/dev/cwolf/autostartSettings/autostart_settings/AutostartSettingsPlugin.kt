@@ -28,33 +28,36 @@ class AutostartSettingsPlugin : FlutterPlugin, MethodCallHandler, ActivityAware 
     }
 
     override fun onMethodCall(call: MethodCall, result: Result) {
-        if (call.method == "canOpen") {
-            val autostart: Boolean = call.argument("autostart") as? Boolean ?: true
-            val batterySafer: Boolean = call.argument("batterySafer") as? Boolean ?: true
-            if (autostart && canOpenAutoStartSettings()) {
-                result.success(true)
-                return
+        when (call.method) {
+            "canOpen" -> {
+                val autoStart: Boolean = call.argument("autoStart") as? Boolean ?: true
+                val batterySafer: Boolean = call.argument("batterySafer") as? Boolean ?: true
+                if (autoStart && canOpenAutoStartSettings()) {
+                    result.success(true)
+                    return
+                }
+                if (batterySafer && canOpenbatterySaferSettings()) {
+                    result.success(true)
+                    return
+                }
+                result.success(false)
             }
-            if (batterySafer && canOpenbatterySaferSettings()) {
-                result.success(true)
-                return
+            "open" -> {
+                val autoStart: Boolean = call.argument("autoStart") as? Boolean ?: true
+                val batterySafer: Boolean = call.argument("batterySafer") as? Boolean ?: true
+                if (autoStart && openAutoStartSettings()) {
+                    result.success(true)
+                    return
+                }
+                if (batterySafer && openBatterySaferSettings()) {
+                    result.success(true)
+                    return
+                }
+                result.success(false)
             }
-            result.success(false)
-        } else if (call.method == "open") {
-            val arguments = call.arguments as HashMap<String, Boolean>
-            val autostart: Boolean = call.argument("autostart") as? Boolean ?: true
-            val batterySafer: Boolean = call.argument("batterySafer") as? Boolean ?: true
-            if (autostart && openAutoStartSettings()) {
-                result.success(true)
-                return
+            else -> {
+                result.notImplemented()
             }
-            if (batterySafer && openBatterySaferSettings()) {
-                result.success(true)
-                return
-            }
-            result.success(false)
-        } else {
-            result.notImplemented()
         }
     }
 
