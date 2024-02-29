@@ -9,21 +9,20 @@ Many manufacturers disable apps from auto starting by default. This prevents sch
 This plugin links the user to the settings page where the user can enable autostart permission for selected apps. It also can navigate the user to device specific battery safer permission, where the user can select apps that shouldn't be killed in the background.
 
 Currently this plugin support a wide variety of manufacturers gathered over the years;
-* Xiaomi / Redmi
-* Oppo
-* Vivo
+* Asus
+* HTC
+* Huawei
+* IQOO
 * LeEco
 * Mediatek
-* IQOO
-* Tecno
-* Huawei
-* Asus
 * Meizu
-* OnePlus
-* HTC
 * Nokia
+* OnePlus
+* Oppo
 * Samsung
-
+* Tecno
+* Vivo
+* Xiaomi / Redmi
 
 
 
