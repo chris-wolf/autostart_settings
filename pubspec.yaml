@@ -1,7 +1,7 @@
 name: autostart_settings
 description: "Plugin to check if autostart settings is available for the device and opens the autostart settings"
 version: 0.0.1
-homepage:
+repository: https://github.com/chris-wolf/autostart_settings
 
 environment:
   sdk: '>=3.3.0 <4.0.0'
