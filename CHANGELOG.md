@@ -12,3 +12,6 @@
 * Return false for other platforms that android instead of crashing
 * Adjusted readme
 
+## 0.1.0
+
+* Changed screenshot
