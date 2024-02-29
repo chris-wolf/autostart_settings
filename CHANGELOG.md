@@ -19,3 +19,8 @@
 ## 0.1.1
 
 * Fixed autostart parameter
+
+
+## 0.1.2
+
+* Adjusted readme
