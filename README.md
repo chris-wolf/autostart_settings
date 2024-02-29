@@ -31,7 +31,7 @@ Currently this plugin support a wide variety of manufacturers gathered over the 
 | **Support** | 14+     |
 
 
-![The example app running in Redmi 7A](https://github.com/chris-wolf/autostart_settings/blob/main/example/videos/autostart_settings_xiaomi.gif?raw=true)
+![The example app running on Redmi 7A](https://github.com/chris-wolf/autostart_settings/blob/main/example/videos/autostart_settings_xiaomi.gif?raw=true)
 
 ## Installation
 
