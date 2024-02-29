@@ -40,7 +40,7 @@ class _MyAppState extends State<MyApp> {
                         }
                       });
                     },
-                    child: const Text('openSettings')),
+                    child: const Text('Can open autostart settings')),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -52,7 +52,7 @@ class _MyAppState extends State<MyApp> {
                         _text = 'Settings opened: $opened';
                       });
                     },
-                    child: const Text('openSettings')),
+                    child: const Text('Open autostart Settings')),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),

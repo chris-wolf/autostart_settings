@@ -30,6 +30,9 @@ Currently this plugin support a wide variety of manufacturers gathered over the 
 |-------------|---------|
 | **Support** | 14+     |
 
+
+![The example app running in Redmi 7A](https://github.com/chris-wolf/autostart_settings/blob/main/example/videos/autostart_settings_xiaomi.gif?raw=true)
+
 ## Installation
 
 First, add `autostart_settings` as a [dependency in your pubspec.yaml file](https://flutter.dev/using-packages/).

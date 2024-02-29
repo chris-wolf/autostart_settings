@@ -1,6 +1,6 @@
 name: autostart_settings
 description: "Plugin to check if autostart settings is available for the device and opens the autostart settings"
-version: 0.0.2
+version: 0.0.3
 repository: https://github.com/chris-wolf/autostart_settings
 
 environment:
@@ -22,3 +22,7 @@ flutter:
       android:
         package: dev.cwolf.autostartSettings.autostart_settings
         pluginClass: AutostartSettingsPlugin
+
+screenshots:
+  - description: 'Xiaomi autostart settings'
+    path: example/screenshots/autostart_settings_xiaomi.png
