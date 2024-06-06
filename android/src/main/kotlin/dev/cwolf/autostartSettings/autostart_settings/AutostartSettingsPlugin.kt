@@ -110,6 +110,14 @@ class AutostartSettingsPlugin : FlutterPlugin, MethodCallHandler, ActivityAware 
             Pair(
                 "com.huawei.systemmanager",
                 "com.huawei.systemmanager.optimize.process.ProtectActivity"
+            ),
+            Pair(
+                "com.huawei.systemmanager",
+                "com.huawei.systemmanager.startupmgr.ui.StartupNormalAppListActivity"
+            ),
+            Pair(
+                "com.huawei.systemmanager",
+                "com.huawei.systemmanager.appcontrol.activity.StartupAppControlActivity"
             )
         ).map { Intent().setComponent(ComponentName(it.first, it.second)) }.toTypedArray(),
         // Xiaomi  Remi
@@ -123,6 +131,7 @@ class AutostartSettingsPlugin : FlutterPlugin, MethodCallHandler, ActivityAware 
         ).setData(
             Uri.parse("mobilemanager://function/entry/AutoStart")
         ),
+        Intent().setComponent("com.asus.mobilemanager", "com.asus.mobilemanager.MainActivity")
         // Meizu
         Intent().setComponent(ComponentName.unflattenFromString("com.meizu.safe/.SecurityCenterActivity")),
         // OnePlus
