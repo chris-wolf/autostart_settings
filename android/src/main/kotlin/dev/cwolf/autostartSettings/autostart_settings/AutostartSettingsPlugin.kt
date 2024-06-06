@@ -131,7 +131,7 @@ class AutostartSettingsPlugin : FlutterPlugin, MethodCallHandler, ActivityAware 
         ).setData(
             Uri.parse("mobilemanager://function/entry/AutoStart")
         ),
-        Intent().setComponent("com.asus.mobilemanager", "com.asus.mobilemanager.MainActivity")
+        Intent().setComponent(ComponentName("com.asus.mobilemanager", "com.asus.mobilemanager.MainActivity")),
         // Meizu
         Intent().setComponent(ComponentName.unflattenFromString("com.meizu.safe/.SecurityCenterActivity")),
         // OnePlus

@@ -1,7 +1,6 @@
-## 0.1.3
+## 0.1.4
 
-* Improved Huawei support
-
+* Improved Huawei and asus support
 
 ## 0.1.2
 
