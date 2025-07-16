@@ -11,7 +11,7 @@ This plugin links the user to the settings page where the user can enable autost
 Currently this plugin support a wide variety of manufacturers gathered over the years;
 * Asus
 * HTC
-* Huawei
+* Huawei (⚠️ newer versions prevent opening of autostart settings)
 * IQOO
 * LeEco
 * Mediatek
@@ -26,9 +26,9 @@ Currently this plugin support a wide variety of manufacturers gathered over the 
 
 
 
-|             | Android |
-|-------------|---------|
-| **Support** | 14+     |
+|             | Android        |
+|-------------|----------------|
+| **Support** | 4.0+ (API 14+) |
 
 
 ![The example app running on Redmi 7A](https://github.com/chris-wolf/autostart_settings/blob/main/example/videos/autostart_settings_xiaomi.gif?raw=true)
