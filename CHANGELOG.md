@@ -1,3 +1,7 @@
+## 0.1.6
+
+* Added more intents
+
 ## 0.1.5
 
 * Clarification in Readme
