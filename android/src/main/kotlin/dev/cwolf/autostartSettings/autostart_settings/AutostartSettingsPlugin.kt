@@ -130,7 +130,7 @@ class AutostartSettingsPlugin : FlutterPlugin, MethodCallHandler, ActivityAware 
             ),
             Pair("com.huawei.systemmanager", "com.huawei.systemmanager.optimize.process.ProtectActivity"),
 
-        ).map { Intent().setComponent(ComponentName(it.first, it.second)) }.toTypedArray(),
+            ).map { Intent().setComponent(ComponentName(it.first, it.second)) }.toTypedArray(),
         // Xiaomi  Remi
         Intent("miui.intent.action.OP_AUTO_START").addCategory(Intent.CATEGORY_DEFAULT),
         // Asus
@@ -178,78 +178,74 @@ class AutostartSettingsPlugin : FlutterPlugin, MethodCallHandler, ActivityAware 
             "com.evenwell.powersaving.g3.exception.PowerSaverExceptionActivity"
         ),
         Pair("com.asus.mobilemanager", "com.asus.mobilemanager.powersaver.PowerSaverSettings"),
-        // LG (Older devices)
-            Pair(
-                "com.android.settings",
-                "com.android.settings.Settings\$HighPowerApplicationsActivity"
-            )
+        //    Pair("com.android.settings",  "com.android.settings.Settings\$HighPowerApplicationsActivity") testen on OnePlus, but default is battery safer off for apps so no need to open it
             ).map { Intent().setComponent(ComponentName(it.first, it.second)) }.toTypedArray(),
         // OnePlus alternate method (Intent action-based)
         Intent("com.android.settings.action.BACKGROUND_OPTIMIZE").addCategory(Intent.CATEGORY_DEFAULT),
         )
 
     private fun canOpenAutoStartSettings(): Boolean {
-        val pm = binding?.activity?.packageManager ?: return false
-        for (intent in autoStartActivities) {
-            val resolveInfo = pm.resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY)
-            if (resolveInfo?.activityInfo != null) {
-                val activityInfo = resolveInfo.activityInfo
-                // Check if exported and no permission is required
-                if (activityInfo.exported && activityInfo.permission == null) {
-                    return true
-                }
-            }
-        }
-        return false
+        // Return true if any intent in the list can be opened.
+        // The '::' creates a reference to the canOpenIntent function.
+        return autoStartActivities.any(::canOpenIntent)
     }
 
     private fun canOpenbatterySaferSettings(): Boolean {
-        val pm = binding?.activity?.packageManager ?: return false
-        for (intent in batterySaferActivity) {
-            val resolveInfo = pm.resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY)
-            if (resolveInfo?.activityInfo != null) {
-                val activityInfo = resolveInfo.activityInfo
-                // Check if exported and no permission is required
-                if (activityInfo.exported && activityInfo.permission == null) {
-                    return true
-                }
-            }
-        }
-        return false
+        // This is equivalent to: batterySaferActivity.any { intent -> canOpenIntent(intent) }
+        return batterySaferActivity.any(::canOpenIntent)
     }
 
+
     private fun openAutoStartSettings(): Boolean {
-        try {
-            autoStartActivities.firstOrNull { isIntentResolved(it) }?.let { intent ->
-                val list: List<ResolveInfo> =
-                    binding?.activity?.packageManager?.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY) ?: emptyList()
-                if (list?.isNotEmpty() == true) {
-                    binding?.activity?.startActivity(intent)
-                    return true;
-                }
-            }
-        } catch (e: Exception) {
-            Log.e("exc", e.toString())
-        }
-        return false
+        return tryOpenFirstAvailableIntent(autoStartActivities)
     }
 
     private fun openBatterySaferSettings(): Boolean {
+        return tryOpenFirstAvailableIntent(batterySaferActivity)
+    }
+
+    /**
+     * Tries to find the first resolvable and safe-to-open intent from a list
+     * and starts the corresponding activity.
+     *
+     * @param intents The list of Intents to try.
+     * @return `true` if an activity was successfully started, `false` otherwise.
+     */
+    private fun tryOpenFirstAvailableIntent(intents: List<Intent>): Boolean {
         try {
-            batterySaferActivity.firstOrNull { isIntentResolved(it) }?.let { intent ->
-                val list: List<ResolveInfo> =
-                    binding?.activity?.packageManager?.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY) ?: emptyList()
-                if (list.isNotEmpty()) {
-                    binding?.activity?.startActivity(intent)
-                    return true;
-                }
+            // Find the first intent that passes our validation using the helper function.
+            // The 'let' block executes only if a valid intent is found.
+            intents.firstOrNull(::canOpenIntent)?.let { intentToOpen ->
+                binding?.activity?.startActivity(intentToOpen)
+                return true // Activity was started successfully.
             }
         } catch (e: Exception) {
-            Log.e("exc", e.toString())
+            // Log any exception that occurs during startActivity
+            Log.e("IntentLauncher", "Could not start activity from intent list.", e)
         }
+        // Return false if no suitable intent was found or if an exception occurred.
         return false
     }
 
+    /**
+     * Checks if a single Intent can be resolved to an activity
+     * that is exported and does not require a permission.
+     *
+     * @param intent The Intent to check.
+     * @return `true` if the intent resolves to a suitable activity, `false` otherwise.
+     */
+    private fun canOpenIntent(intent: Intent): Boolean {
+        val pm = binding?.activity?.packageManager ?: return false
+
+        // Resolve the activity for the given intent
+        val resolveInfo = pm.resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY)
+
+        // Use a null-safe let block to check the activity's properties
+        return resolveInfo?.activityInfo?.let { activityInfo ->
+            // The activity is valid if it's exported and has no permission requirement
+            activityInfo.exported && activityInfo.permission == null
+        } ?: false // If resolveInfo or activityInfo is null, the result is false.
+    }
 
     override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {
         channel.setMethodCallHandler(null)
