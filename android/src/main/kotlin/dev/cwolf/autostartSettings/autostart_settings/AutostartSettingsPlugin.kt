@@ -80,7 +80,7 @@ class AutostartSettingsPlugin : FlutterPlugin, MethodCallHandler, ActivityAware 
                 "com.miui.securitycenter",
                 "com.miui.permcenter.autostart.AutoStartManagementActivity"
             ),
-            // Oppo
+            // Oppo / RealMe
             Pair(
                 "com.coloros.safecenter",
                 "com.coloros.safecenter.permission.startup.StartupAppListActivity"
@@ -90,6 +90,15 @@ class AutostartSettingsPlugin : FlutterPlugin, MethodCallHandler, ActivityAware 
                 "com.coloros.safecenter.startupapp.StartupAppListActivity"
             ),
             Pair("com.oppo.safe", "com.oppo.safe.permission.startup.StartupAppListActivity"),
+            Pair(
+                "com.coloros.safecenter",
+                "com.coloros.privacypermissionsentry.PermissionTopActivity"
+            ),
+            Pair("com.coloros.safe", "com.oppo.safe.permission.startup.StartupAppListActivity"),
+            Pair(
+                "com.coloros.safecenter",
+                "com.coloros.privacypermissionsentry.PermissionTopActivity.Startupmanager"
+            ),
             // Vivo
             Pair(
                 "com.vivo.permissionmanager",
@@ -118,7 +127,9 @@ class AutostartSettingsPlugin : FlutterPlugin, MethodCallHandler, ActivityAware 
             Pair(
                 "com.huawei.systemmanager",
                 "com.huawei.systemmanager.appcontrol.activity.StartupAppControlActivity"
-            )
+            ),
+            Pair("com.huawei.systemmanager", "com.huawei.systemmanager.optimize.process.ProtectActivity"),
+
         ).map { Intent().setComponent(ComponentName(it.first, it.second)) }.toTypedArray(),
         // Xiaomi  Remi
         Intent("miui.intent.action.OP_AUTO_START").addCategory(Intent.CATEGORY_DEFAULT),
@@ -132,6 +143,12 @@ class AutostartSettingsPlugin : FlutterPlugin, MethodCallHandler, ActivityAware 
             Uri.parse("mobilemanager://function/entry/AutoStart")
         ),
         Intent().setComponent(ComponentName("com.asus.mobilemanager", "com.asus.mobilemanager.MainActivity")),
+        Intent().setComponent(
+            ComponentName(
+                "com.asus.mobilemanager",
+                "com.asus.mobilemanager.autostart.AutoStartActivity"
+            )
+        ),
         // Meizu
         Intent().setComponent(ComponentName.unflattenFromString("com.meizu.safe/.SecurityCenterActivity")),
         // OnePlus
@@ -146,25 +163,59 @@ class AutostartSettingsPlugin : FlutterPlugin, MethodCallHandler, ActivityAware 
     )
 
     val batterySaferActivity = arrayListOf(
+        *arrayListOf(
         // Samsung
         Pair("com.samsung.android.lool", "com.samsung.android.sm.ui.battery.BatteryActivity"),
         Pair("com.samsung.android.sm", "com.samsung.android.sm.ui.battery.BatteryActivity"),
         Pair("com.samsung.android.sm_cn", "com.samsung.android.sm.ui.battery.BatteryActivity"),
-        // iQOO
+        Pair("com.samsung.android.sm", "com.samsung.android.sm.battery.ui.usage.CheckableAppListActivity"),
+        Pair("com.samsung.android.sm", "com.samsung.android.sm.battery.ui.BatteryActivity"),
+    // iQOO
         Pair("com.iqoo.secure", "com.iqoo.secure.ui.phoneoptimize.AddWhiteListActivity"),
         // Nokia
         Pair(
             "com.evenwell.powersaving.g3",
             "com.evenwell.powersaving.g3.exception.PowerSaverExceptionActivity"
+        ),
+        Pair("com.asus.mobilemanager", "com.asus.mobilemanager.powersaver.PowerSaverSettings"),
+        // LG (Older devices)
+            Pair(
+                "com.android.settings",
+                "com.android.settings.Settings\$HighPowerApplicationsActivity"
+            )
+            ).map { Intent().setComponent(ComponentName(it.first, it.second)) }.toTypedArray(),
+        // OnePlus alternate method (Intent action-based)
+        Intent("com.android.settings.action.BACKGROUND_OPTIMIZE").addCategory(Intent.CATEGORY_DEFAULT),
         )
-    ).map { Intent().setComponent(ComponentName(it.first, it.second)) }
 
     private fun canOpenAutoStartSettings(): Boolean {
-        return autoStartActivities.any { isIntentResolved(it) }
+        val pm = binding?.activity?.packageManager ?: return false
+        for (intent in autoStartActivities) {
+            val resolveInfo = pm.resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY)
+            if (resolveInfo?.activityInfo != null) {
+                val activityInfo = resolveInfo.activityInfo
+                // Check if exported and no permission is required
+                if (activityInfo.exported && activityInfo.permission == null) {
+                    return true
+                }
+            }
+        }
+        return false
     }
 
     private fun canOpenbatterySaferSettings(): Boolean {
-        return batterySaferActivity.any { isIntentResolved(it) }
+        val pm = binding?.activity?.packageManager ?: return false
+        for (intent in batterySaferActivity) {
+            val resolveInfo = pm.resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY)
+            if (resolveInfo?.activityInfo != null) {
+                val activityInfo = resolveInfo.activityInfo
+                // Check if exported and no permission is required
+                if (activityInfo.exported && activityInfo.permission == null) {
+                    return true
+                }
+            }
+        }
+        return false
     }
 
     private fun openAutoStartSettings(): Boolean {
@@ -199,9 +250,6 @@ class AutostartSettingsPlugin : FlutterPlugin, MethodCallHandler, ActivityAware 
         return false
     }
 
-    private fun isIntentResolved(intent: Intent): Boolean {
-        return (binding?.activity?.packageManager?.resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY) != null);
-    }
 
     override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {
         channel.setMethodCallHandler(null)
