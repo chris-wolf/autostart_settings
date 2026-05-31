@@ -1,11 +1,11 @@
 name: autostart_settings
 description: "Plugin to check if autostart settings is available for the device and opens the autostart settings"
-version: 0.1.6
+version: 0.2.0
 repository: https://github.com/chris-wolf/autostart_settings
 
 environment:
-  sdk: '>=3.3.0 <4.0.0'
-  flutter: '>=3.3.0'
+  sdk: '>=3.12.0 <4.0.0'
+  flutter: '>=3.44.0'
 
 dependencies:
   flutter:
